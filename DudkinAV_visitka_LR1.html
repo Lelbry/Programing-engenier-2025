@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сайт-визитка</title>
+    <style>
+        /* Глобальный стиль для всех текстовых элементов */
+        body {
+            color: black; /* Тёмно-синий цвет текста */
+        }
+
+        /* Стиль для ссылок*/
+        a {
+            color: gray;
+        }
+
+        /* Стиль для кнопки*/
+        button {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+     
+    <!-- Шапка сайта -->
+    <header>
+        <h1>Сайт-визитка by Lelbry</h1>
+        <hr>
+    </header>
+
+    <!-- Раздел "О себе" -->
+    <section id="about">
+        <h2>О себе</h2>
+        <p>Мое имя Александр Дартос. Scada_back=front/devops разработчик.</p>
+        <img src="ava.jpg" alt="Мое фото" width="200">
+    </section>
+	
+    <!-- Раздел "Хобби" -->
+    <section id="hobbies">
+        <h2>Мои хобби</h2>
+        <ul>
+            <li>Программирование</li>
+            <li>Баскетбол</li>
+            <li>Футбол</li>
+            <li>Автоспорт</li>
+        </ul>
+    </section>
+
+    <!-- Раздел "Контакты" -->
+    <section id="contacts">
+        <h2>Контакты</h2>
+        <p>Свяжитесь со мной:</p>
+        <p>Email: <a href="mailto:sasadudkin73@gmail.com">sasadudkin73@gmail.com</a></p>
+		<p>Telegram: <a href="https://t.me/Lelbry" target="_blank">Мой телеграм</a></p>
+        <p>GitHub: <a href="https://github.com/Lelbry" target="_blank">Мой github</a></p>
+    </section>
+	
+    <!-- Раздел "Мои проекты" -->
+    <section id="projects">
+        <h2>Мои проекты</h2>
+        <!-- Таблица с проектами -->
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Проект 1</td>
+                    <td>Разработка SCADA-системы</td>
+                </tr>
+                <tr>
+                    <td>Проект 2</td>
+                    <td>Игра змейка</td>
+                </tr>
+                <tr>
+                    <td>Проект 3</td>
+                    <td>Анализатор событий</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Фотографии проектов -->
+        <div>
+            <h3>Фотографии проектов:</h3>
+            <img src="project1.jpg" alt="Проект 1" width="350" height="200">
+            <img src="project2.jpg" alt="Проект 2" width="250" height="200">
+            <img src="project3.jpg" alt="Проект 3" width="350" height="200">
+        </div>
+    </section>
+
+    <!-- Аудио -->
+    <audio id="welcomeSound" src="tu-tu-tu-du-max-verstapen.mp3"></audio>
+
+    <!-- Кнопка для воспроизведения звука -->
+    <button onclick="document.getElementById('welcomeSound').play()">F1 redbull sound</button>
+</body>
+</html>

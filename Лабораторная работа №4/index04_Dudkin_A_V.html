@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Задание 4</title>
+    <script src="Vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Форма авторизации -->
+        <template v-if="currentMode === 'auth'" style="text-align: center; margin-top: 100px;">
+            <h2>Форма авторизации</h2>
+            <div>
+                <label>Логин: </label>
+                <input type="text" v-model="login">
+            </div>
+            <div style="margin-top: 10px;">
+                <label>Пароль: </label>
+                <input type="password" v-model="password">
+            </div>
+            <button style="margin-top: 20px;" @click="checkAuth">Войти</button>
+            <p v-if="error" style="color: red;">{{ error }}</p>
+        </template>
+
+        <!-- Режим test -->
+        <template v-if="currentMode === 'test'" style="text-align: center; margin-top: 100px;">
+            <h2>Информация о разработчике</h2>
+            <p>Фамилия: {{ lastName }}</p>
+            <p>Имя: {{ firstName }}</p>
+            <p>Отчество: {{ middleName }}</p>
+            <p>Группа: {{ group }}</p>
+            <button style="margin-top: 20px;" @click="logout">Выйти</button>
+        </template>
+
+        <!-- Режим admin -->
+        <template v-if="currentMode === 'admin'" style="text-align: center; margin-top: 100px;">
+            <h2>Редактирование информации</h2>
+            <div>
+                <label>Фамилия: </label>
+                <input type="text" v-model="lastName">
+            </div>
+            <div style="margin-top: 10px;">
+                <label>Имя: </label>
+                <input type="text" v-model="firstName">
+            </div>
+            <div style="margin-top: 10px;">
+                <label>Отчество: </label>
+                <input type="text" v-model="middleName">
+            </div>
+            <button style="margin-top: 20px;" @click="logout">Выйти</button>
+        </template>
+
+        <!-- Режим user -->
+        <template v-if="currentMode === 'user'" style="text-align: center; margin-top: 100px;">
+            <h2>Ввод информации о группе</h2>
+            <div>
+                <label>Название и номер группы: </label>
+                <input type="text" v-model="group">
+            </div>
+            <button style="margin-top: 20px;" @click="logout">Выйти</button>
+        </template>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                currentMode: 'auth',
+                login: '',
+                password: '',
+                error: '',
+                lastName: 'Дудкин',
+                firstName: 'Александр',
+                middleName: 'Владимирович',
+                group: 'ТУУ-171'
+            },
+            methods: {
+                checkAuth() {
+                    if (this.login === 'test' && this.password === 'test') {
+                        this.currentMode = 'test';
+                        this.error = '';
+                    } else if (this.login === 'admin' && this.password === 'admin') {
+                        this.currentMode = 'admin';
+                        this.error = '';
+                    } else if (this.login === 'user' && this.password === 'user') {
+                        this.currentMode = 'user';
+                        this.error = '';
+                    } else {
+                        this.error = 'Неверный логин или пароль';
+                    }
+                    this.login = '';
+                    this.password = '';
+                },
+                logout() {
+                    this.currentMode = 'auth';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

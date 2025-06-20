@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сайт-визитка</title>
+    <style>
+        body {
+            color: black;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            color: gray;
+        }
+
+        button {
+            color: black;
+            padding: 8px 12px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        footer {
+            /* background-color: #f0f0f0;*/
+            background: linear-gradient(to left, #e0b3ff, #ffd1a4); /* мягкий градиент для подвала */
+            padding: 10px;
+            text-align: left;
+            border-top: 2px solid #ccc; 
+        }
+
+        #dynamicProjects img {
+            margin: 5px;
+        }
+
+        /* Фон*/
+        body {
+            background: linear-gradient(to right, violet, orange);
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+    <header>
+        <div id="header-container">
+            <h1 id="main-heading">Сайт-визитка by Lelbry</h1>
+        </div>
+        <hr>
+    </header>
+
+    <!-- О себе -->
+    <section id="about">
+        <h2>О себе</h2>
+        <p>Мое имя Александр Дартос. Scada_back=front/devops разработчик.</p>
+        <img src="ava.jpg" alt="Мое фото" width="300">
+    </section>
+
+    <!-- Хобби -->
+    <section id="hobbies">
+        <h2>Мои хобби</h2>
+        <ul id="hobbyList"></ul>
+    </section>
+
+    <!-- Контакты -->
+    <section id="contacts">
+        <h2>Контакты</h2>
+        <p>Email: <a href="mailto:sasadudkin73@gmail.com">sasadudkin73@gmail.com</a></p>
+        <p>Telegram: <a href="https://t.me/Lelbry" target="_blank">Мой телеграм</a></p>
+        <p>GitHub: <a href="https://github.com/Lelbry" target="_blank">Мой GitHub</a></p>
+    </section>
+
+    <!-- Проекты -->
+    <section id="projects">
+        <h2>Мои проекты</h2>
+        <div id="dynamicProjects"></div>
+    </section>
+
+    <!-- Аудио -->
+    <audio id="welcomeSound" src="tu-tu-tu-du-max-verstapen.mp3"></audio>
+    <button id="playSoundBtn">F1 redbull sound</button>
+
+    <!-- Подвал footer с кнопками -->
+    <footer>
+        <p>Изменить размер заголовка:</p>
+        <div id="heading-buttons">
+            <button data-tag="h1">H1</button>
+            <button data-tag="h2">H2</button>
+            <button data-tag="h3">H3</button>
+            <button data-tag="h4">H4</button>
+            <button data-tag="h5">H5</button>
+            <button data-tag="h6">H6</button>
+        </div>
+    </footer>
+
+    <script>
+        // Хобби
+        const hobbies = ['Программирование', 'Баскетбол', 'Футбол', 'Автоспорт'];
+        const hobbyList = document.getElementById('hobbyList');
+        hobbies.forEach(hobby => {
+            const li = document.createElement('li');
+            li.textContent = hobby;
+            hobbyList.appendChild(li);
+        });
+
+        // Проекты
+        const projects = [
+            { name: 'Проект 1', description: 'Разработка SCADA-системы', image: 'project1.jpg', width: 350, height: 200 },
+            { name: 'Проект 2', description: 'Игра змейка', image: 'project2.jpg', width: 250, height: 200 },
+            { name: 'Проект 3', description: 'Анализатор событий', image: 'project3.jpg', width: 350, height: 200 }
+        ];
+
+        const projectDiv = document.getElementById('dynamicProjects');
+
+        const table = document.createElement('table');
+        const headerRow = table.insertRow();
+        headerRow.innerHTML = '<th>Название</th><th>Описание</th>';
+        projects.forEach(p => {
+            const row = table.insertRow();
+            row.innerHTML = `<td>${p.name}</td><td>${p.description}</td>`;
+        });
+
+        projectDiv.appendChild(table);
+        const imageTitle = document.createElement('h3');
+        imageTitle.textContent = 'Фотографии проектов:';
+        projectDiv.appendChild(imageTitle);
+        projects.forEach(p => {
+            const img = document.createElement('img');
+            img.src = p.image;
+            img.alt = p.name;
+            img.width = p.width;
+            img.height = p.height;
+            projectDiv.appendChild(img);
+        });
+
+        // Воспроизведение звука
+        document.getElementById('playSoundBtn').addEventListener('click', () => {
+            document.getElementById('welcomeSound').play();
+        });
+
+        // Управление заголовком
+        const headerContainer = document.getElementById('header-container');
+        const buttonPanel = document.getElementById('heading-buttons');
+        const buttons = buttonPanel.querySelectorAll('button');
+
+        // Описано подробно в BPMN
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tag = button.dataset.tag;
+
+                // Найти текущий заголовок
+                const currentHeading = headerContainer.firstElementChild;
+
+                // Сохранить текст
+                const text = currentHeading.textContent;
+
+                // Удалить текущий заголовок
+                headerContainer.removeChild(currentHeading);
+
+                // Создать новый заголовок нужного тега
+                const newHeading = document.createElement(tag);
+                newHeading.id = 'main-heading';
+                newHeading.textContent = text;
+
+                // Добавить в DOM Document object module
+                headerContainer.appendChild(newHeading);
+
+                // Сделать все кнопки активными
+                buttons.forEach(btn => btn.disabled = false);
+
+                // Деактивировать текущую кнопку
+                button.disabled = true;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Задание 3</title>
+    <script src="Vue.js"></script>
+</head>
+<body>
+    <div id="app" @keydown="handleKeydown" tabindex="0">
+        <div :style="textStyle">
+            {{ displayText }}
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                displayText: 'Текст для выравнивания',
+                horizontalPosition: 0, // 0: left, 1: center, 2: right
+                verticalPosition: 0    // 0: top, 1: middle, 2: bottom
+            },
+            computed: {
+                horizontalAlign: {
+                    get() {
+                        return ['left', 'center', 'right'][this.horizontalPosition];
+                    },
+                    set(value) {
+                        this.horizontalPosition = ['left', 'center', 'right'].indexOf(value);
+                    }
+                },
+                verticalPadding: {
+                    get() {
+                        return ['0px', '200px', '400px'][this.verticalPosition];
+                    },
+                    set(value) {
+                        this.verticalPosition = ['0px', '200px', '400px'].indexOf(value);
+                    }
+                },
+                textStyle() {
+                    return {
+                        textAlign: this.horizontalAlign,
+                        paddingTop: this.verticalPadding,
+                        width: '100%',
+                        height: '100px',
+                        boxSizing: 'border-box'
+                    };
+                }
+            },
+            methods: {
+                handleKeydown(event) {
+                    // Управление выравниванием по горизонтали
+                    if (event.key === 'ArrowLeft') {
+                        if (this.horizontalPosition > 0) {
+                            this.horizontalPosition--;
+                        }
+                    } else if (event.key === 'ArrowRight') {
+                        if (this.horizontalPosition < 2) {
+                            this.horizontalPosition++;
+                        }
+                    } else if (event.key === 'ArrowUp') {
+                        if (this.verticalPosition > 0) {
+                            this.verticalPosition--;
+                        }
+                    } else if (event.key === 'ArrowDown') {
+                        if (this.verticalPosition < 2) {
+                            this.verticalPosition++;
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #app {
+            width: 500px;
+            height: 500px;
+            border: 1px solid #000;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            position: relative;
+        }
+    </style>
+</body>
+</html>

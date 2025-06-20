@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Задание 2</title>
+    <script src="Vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div :style="{ textAlign: textAlign, width: width, height: height, border: border }" @dblclick="handleDoubleClick">
+            {{ displayText }}
+        </div>
+        <!--Директиву v-on можно записать сокращённо как @-->
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                displayText: '', // Отображаемый текст
+                isCentered: false, // Логичский флажок выравнивания текста по центру
+                width: '300px', // Ширина блока div
+                height: '300px', // Высота блока div
+                border: '2px solid black', // Граница для div
+
+            },
+            computed: {
+                textAlign() {
+                    return this.isCentered ? 'center' : 'left';
+                } // Выравнивание текста
+            },
+            methods: {
+                handleDoubleClick(event) {
+                    this.displayText = 'Мой текст'; 
+
+                    if (event.shiftKey) {
+                        this.isCentered = !this.isCentered;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Списки, переборы, v-for</title>
+    <script src="Vue.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .input-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+        input {
+            padding: 8px;
+            width: 60px;
+            margin-right: 10px;
+        }
+        .spiral-container {
+            margin: 30px 0;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .spiral-table {
+            border-collapse: collapse;
+            margin: 20px auto;
+            display: inline-block;
+        }
+        .spiral-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            min-width: 40px;
+            height: 40px;
+            font-size: 0.9em;
+        }
+        .page-controls {
+            margin: 15px 0;
+            text-align: center;
+        }
+        button {
+            padding: 8px 15px;
+            margin: 0 5px;
+            background: #42b983;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .control-output {
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid #eee;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .layer-row {
+            margin-bottom: 10px;
+            padding: 8px;
+            background: #fff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="input-container">
+            <label for="dimension">Размерность массива (N×N×N): </label>
+            <input 
+                id="dimension" 
+                type="number" 
+                min="1" 
+                max="5" 
+                v-model.number="dimension" 
+                @blur="generateArray"
+            >
+        </div>
+
+        <div v-if="cubicArray.length > 0" class="spiral-container">
+            <h2>Спиральное представление массива</h2>
+            <table class="spiral-table">
+                <tr v-for="(row, rowIndex) in spiralView" :key="rowIndex">
+                    <td v-for="(cell, cellIndex) in row" :key="cellIndex">
+                        {{ cell || '' }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div v-if="cubicArray.length > 0" class="control-output">
+            <h2>Построчное представление по слоям</h2>
+            
+            <div class="page-controls">
+                <button @click="prevPage" :disabled="currentPage === 0">← Предыдущий слой</button>
+                <span>Слой {{ currentPage + 1 }} из {{ dimension }}</span>
+                <button @click="nextPage" :disabled="currentPage === dimension - 1">Следующий слой →</button>
+            </div>
+            
+            <div v-for="(row, rowIndex) in currentLayer" :key="rowIndex" class="layer-row">
+                Строка {{ rowIndex + 1 }}: {{ row.join(' $ ') }}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, computed } = Vue;
+
+        createApp({
+            setup() {
+                const dimension = ref(2);
+                const cubicArray = ref([]);
+                const spiralView = ref([]);
+                const currentPage = ref(0);
+
+                function generateRandomValue() {
+                    return Math.floor(Math.random() * 900) + 100; // 100-999
+                }
+
+                function calculateTableSize(n) {
+                    let size = Math.ceil(Math.sqrt(n*n*n));
+                    return size % 2 === 0 ? size + 1 : size;
+                }
+
+                function generateArray() {
+                    // Генерация 3D массива
+                    const newArray = [];
+                    for (let z = 0; z < dimension.value; z++) {
+                        const layer = [];
+                        for (let y = 0; y < dimension.value; y++) {
+                            const row = [];
+                            for (let x = 0; x < dimension.value; x++) {
+                                row.push(generateRandomValue());
+                            }
+                            layer.push(row);
+                        }
+                        newArray.push(layer);
+                    }
+                    cubicArray.value = newArray;
+                    updateSpiralView();
+                }
+
+                function updateSpiralView() {
+                    const tableSize = calculateTableSize(dimension.value);
+                    const table = Array(tableSize).fill().map(() => Array(tableSize).fill(null));
+                    
+                    const allElements = [];
+                    for (let z = 0; z < dimension.value; z++) {
+                        for (let y = 0; y < dimension.value; y++) {
+                            for (let x = 0; x < dimension.value; x++) {
+                                allElements.push(cubicArray.value[z][y][x]);
+                            }
+                        }
+                    }
+                    
+                    let x = Math.floor(tableSize / 2);
+                    let y = Math.floor(tableSize / 2);
+                    let dx = 1, dy = 0;
+                    let segmentLength = 1;
+                    let segmentPassed = 0;
+                    let elementsPlaced = 0;
+                    
+                    while (elementsPlaced < allElements.length) {
+                        if (x >= 0 && x < tableSize && y >= 0 && y < tableSize) {
+                            table[y][x] = allElements[elementsPlaced];
+                            elementsPlaced++;
+                        }
+                        
+                        x += dx;
+                        y += dy;
+                        segmentPassed++;
+                        
+                        if (segmentPassed === segmentLength) {
+                            segmentPassed = 0;
+                            const temp = dx;
+                            dx = -dy;
+                            dy = temp;
+                            
+                            if (dy === 0) {
+                                segmentLength++;
+                            }
+                        }
+                    }
+                    
+                    spiralView.value = table;
+                }
+
+                function nextPage() {
+                    if (currentPage.value < dimension.value - 1) {
+                        currentPage.value++;
+                    }
+                }
+
+                function prevPage() {
+                    if (currentPage.value > 0) {
+                        currentPage.value--;
+                    }
+                }
+
+                const currentLayer = computed(() => {
+                    return cubicArray.value[currentPage.value] || [];
+                });
+
+                // Инициализация
+                generateArray();
+
+                return {
+                    dimension,
+                    cubicArray,
+                    spiralView,
+                    currentPage,
+                    currentLayer,
+                    generateArray,
+                    nextPage,
+                    prevPage
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

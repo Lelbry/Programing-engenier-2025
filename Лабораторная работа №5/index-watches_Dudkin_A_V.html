@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Наблюдатели watch</title>
+    <script src="Vue.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input {
+            padding: 10px;
+            width: 300px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        .image-container {
+            width: 400px;
+            height: 300px;
+            border: 2px solid #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .available-images {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .available-images h3 {
+            margin-bottom: 10px;
+        }
+        .image-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .image-list img {
+            width: 100px;
+            height: 75px;
+            object-fit: cover;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .image-list img:hover {
+            border-color: #42b983;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <h1>Поиск изображений</h1>
+            
+            <input 
+                type="text" 
+                v-model="imageName" 
+                placeholder="Введите название изображения"
+            >
+            
+            <div class="image-container">
+                <img :src="currentImage" :alt="currentImageAlt">
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, watch } = Vue;
+
+        createApp({
+            setup() {
+                const imageName = ref('');
+                const currentImage = ref('');
+                const currentImageAlt = ref('');
+                
+                // Доступные изображения (замените на реальные пути)
+                const Images = ref([
+                    'Image1.jpg',
+                    'Image2.jpg',
+                    'Image3.jpg',
+                    'Image4.jpg',
+                    'Image5.jpg',
+                    'Image6.jpg'
+                ]);
+                
+                // Изображение "не найдено"
+                const notFoundImage = 'Image7.jpg';
+                
+                // Соответствие имен изображениям
+                const imageMapping = {
+                    'image1': 0,
+                    'image2': 1,
+                    'image3': 2,
+                    'image4': 3,
+                    'image5': 4,
+                    'image6': 5
+                };
+                
+                // Наблюдаем за изменением имени изображения
+                watch(imageName, (newValue) => {
+                    const normalizedName = newValue.trim().toLowerCase();
+                    
+                    if (imageMapping.hasOwnProperty(normalizedName)) {
+                        const index = imageMapping[normalizedName];
+                        currentImage.value = Images.value[index];
+                        currentImageAlt.value = `Изображение ${index + 1}`;
+                    } else {
+                        currentImage.value = notFoundImage;
+                        currentImageAlt.value = 'Изображение отсутствует';
+                    }
+                });
+                
+                // Инициализация
+                currentImage.value = notFoundImage;
+                currentImageAlt.value = 'Изображение отсутствует';
+                
+                return {
+                    imageName,
+                    currentImage,
+                    currentImageAlt,
+                    Images,
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

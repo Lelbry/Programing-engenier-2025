@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сайт-визитка</title>
+    <link rel="stylesheet" href="samuraaiCSS.css">
+</head>
+<body>
+    <!-- Здесь изменение в отличии от Лр1 -->
+    <header>
+    <h2>Сайт-визитка by Lelbry</h2>
+    </header>
+
+    <div class="preamble">
+        <h3>Добро пожаловать на мой сайт-визитку</h3>
+        <p>Мое имя Александр Дартос. Scada_back=front/devops разработчик.</p>
+
+
+    <!-- Бывший Раздел "О себе" до интегарции стилей.-->
+    <section id="about">
+        <img src="ava.jpg" alt="Мое фото" width="170" style="margin-left: 200px;">
+    </section>
+    
+    <!-- Раздел "Хобби" -->
+    <section id="hobbies">
+        <h2>Мои хобби</h2>
+        <ul>
+            <li>Программирование</li>
+            <li>Баскетбол</li>
+            <li>Футбол</li>
+            <li>Автоспорт</li>
+        </ul>
+    </section>
+
+    <!-- Раздел "Контакты" -->
+    <section id="contacts">
+        <h2>Контакты</h2>
+        <p>Свяжитесь со мной:</p>
+        <p>Email: <a href="mailto:sasadudkin73@gmail.com">sasadudkin73@gmail.com</a></p>
+        <p>Telegram: <a href="https://t.me/Lelbry" target="_blank">Мой телеграм</a></p>
+        <p>GitHub: <a href="https://github.com/Lelbry" target="_blank">Мой github</a></p>
+    </section>
+    
+    <!-- Раздел "Мои проекты" -->
+    <section id="projects">
+        <h2>Мои проекты</h2>
+        <!-- Таблица с проектами -->
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Проект 1</td>
+                    <td>Разработка SCADA-системы</td>
+                </tr>
+                <tr>
+                    <td>Проект 2</td>
+                    <td>Игра змейка</td>
+                </tr>
+                <tr>
+                    <td>Проект 3</td>
+                    <td>Анализатор событий</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Фотографии проектов -->
+        <div>
+            <h2>Фотографии проектов:</h2>
+            <img src="project1.jpg" alt="Проект 1" width="350" height="200">
+            <img src="project2.jpg" alt="Проект 2" width="250" height="200">
+            <img src="project3.jpg" alt="Проект 3" width="350" height="200">
+        </div>
+    </section>
+
+    <!-- Аудио -->
+    <audio id="welcomeSound" src="tu-tu-tu-du-max-verstapen.mp3"></audio>
+
+    <!-- Кнопка для воспроизведения звука -->
+    <button onclick="document.getElementById('welcomeSound').play()">F1 redbull sound</button>
+
+    <footer>
+        <p style="margin-left: 0px;""> © Дудкин А. В., 2025</p>
+    </footer>
+        </div>
+</body>
+</html>
